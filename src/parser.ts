@@ -7,7 +7,7 @@ LICENSE.txt file in the root directory of this source tree.
 */
 
 import * as vscode from 'vscode';
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 
 const testRe = /TestCase\s*"([^"]*)"/;
 
@@ -25,7 +25,7 @@ const myExtDir = vscode.extensions.getExtension ("mateusz-lichota.imperial-test-
 export const parseHaskell = (text: string, events: {
   onTest(range: vscode.Range, name: string, testcaseCMD: string): void;
   }) => {
-    const result = execSync(`${myExtDir}/parser`, {input: text}).toString();
+    const result = execFileSync(`${myExtDir}/parser`, [], {input: text}).toString();
     let tcs: [TCimport] = JSON.parse(result);
     tcs.forEach(tc => {
       events.onTest(new vscode.Range(new vscode.Position(tc.rowStart-1, tc.colStart), new vscode.Position(tc.rowStop-1, tc.colStop)), tc.name, tc.command);

@@ -12,7 +12,7 @@ import { parseHaskell } from './parser';
 import fs = require('fs');
 import path = require('path');
 import { v4 as uuidV4 } from 'uuid';
-import { exec } from 'child_process';
+import { execFile } from 'child_process';
 
 
 const textDecoder = new TextDecoder('utf-8');
@@ -110,46 +110,43 @@ export class TestCase {
 
       fs.readFile(filePath, 'utf-8', (err, data) => {
         if (err) {
-          run.skipped(item);
-          vscode.window.showInformationMessage(`error testing ${this.name}: ${err.name} ${err.message}`);
-          reject();
+          run.errored(item, new vscode.TestMessage(`error testing ${this.name}: "${err.name}: ${err.message}"`), Date.now() - start);
+          return resolve();
         }
-        
-        data.replace(/main = (.*)/, `main = ${mainCommand}`);
-        fs.writeFile(newPath, data, (err) => {
+
+        fs.writeFile(newPath, data.replace(/main = (.*)/, `main = ${mainCommand}`), (err) => {
           if (err) {
-            run.skipped(item);
-            vscode.window.showInformationMessage(`error testing ${this.name}: ${err.name} ${err.message}`);
-            reject();
+            run.errored(item, new vscode.TestMessage(`error testing ${this.name}: "${err.name}: ${err.message}"`), Date.now() - start);
+            return resolve();
           }
-          
-          exec(`cd ${dir} && ${runghcPath} ${newPath}`, {}, (err, stdout, stderr) => {
+
+          execFile(runghcPath,  [newPath], { cwd: dir, timeout: 2000, killSignal: "SIGTERM" }, (err, stdout, stderr) => {
             if (err) {
-              run.skipped(item);
-              vscode.window.showInformationMessage(`error testing ${this.name}: ${err.name} ${err.message}`);
-              fs.unlink(newPath, () => reject());
+              if (err.signal === "SIGTERM") {
+                run.failed(item, new vscode.TestMessage(`timeout while testing ${this.name}`), Date.now() - start);
+              } else {
+                run.errored(item, new vscode.TestMessage(`error testing ${this.name}: "${err.name}: ${err.message}"`), Date.now() - start);
+              }
+              return fs.unlink(newPath, () => resolve());
             }
-            
+
             const failureRegexp = new RegExp(`> ${this.name} ([^=]+) = (.+)(\n.+)*test case expected: (.+)`, 'g');
             const failures = Array.from(stdout.matchAll(failureRegexp));
-            
-            
+
             const resultsRegexp = new RegExp(`${this.name}: ([0-9]+) / ([0-9]+)`, 'g');
             const results = stdout.match(resultsRegexp)!;
-            
-            const duration = Date.now() - start;
 
             if (failures.length === 0) {
-              run.passed(item, duration);
+              run.passed(item, Date.now() - start);
             } else {
               const received = failures.map(x => `${this.name} ${x[1]} = ${x[2]}`).join('\n');
               const expected = failures.map(x => `${this.name} ${x[1]} = ${x[4]}`).join('\n');
               const message = vscode.TestMessage.diff(results[0], expected, received);
               message.location = new vscode.Location(item.uri!, item.range!);
-              run.failed(item, message, duration);
+              run.failed(item, message, Date.now() - start);
             }
 
-            fs.unlink(newPath, () => resolve());
+            return fs.unlink(newPath, () => resolve());
           });
         });
       });
