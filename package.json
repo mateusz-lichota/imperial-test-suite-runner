@@ -27,6 +27,7 @@
       }
     }
   },
+  "icon": "imperial_logo.png",
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./ && ghc -no-keep-hi-files -no-keep-o-files src/parser.hs -o parser",
