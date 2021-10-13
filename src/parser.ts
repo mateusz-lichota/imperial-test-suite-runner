@@ -20,7 +20,6 @@ export const parseHaskell = (text: string, events: {
     const result = execSync(`${myExtDir}/src/parser`, {input: text}).toString();
     let tcs: [TCimport] = JSON.parse(result);
     tcs.forEach(tc => {
-      vscode.window.showInformationMessage(JSON.stringify(tc));
       events.onTest(new vscode.Range(new vscode.Position(tc.rowStart-1, tc.colStart), new vscode.Position(tc.rowStop-1, tc.colStop)), tc.name, tc.command);
     });
 };

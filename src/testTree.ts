@@ -92,9 +92,6 @@ export class TestCase {
     return new Promise((resolve, reject) => {
       const runghcPath: string = vscode.workspace.getConfiguration('imperialTestSuiteRunner').get('runghcPath')!;
 
-      vscode.window.showInformationMessage(this.name);
-
-
       const mainCommand = 'goTest $ ' + this.testcaseCMD;
 
       const filePath = item.uri!.fsPath;
@@ -111,29 +108,21 @@ export class TestCase {
         fs.writeFile(newPath, data, (err) => {
           
           exec(`cd ${dir} && ${runghcPath} ${newPath}`, {}, (err, stdout, stderr) => {
-            // vscode.window.showInformationMessage(stdout);
-            vscode.window.showInformationMessage(item.uri?.fsPath!);
             
             const failureRegexp = new RegExp(`> ${this.name} ([^=]+) = (.+)\n *test case expected: (.+)`, 'g');
             const failures = Array.from(stdout.matchAll(failureRegexp));
             
             
-            // vscode.window.showInformationMessage("failures: " + JSON.stringify(failures));
-            
-
             const resultsRegexp = new RegExp(`${this.name}: ([0-9]+) / ([0-9]+)`, 'g');
             const results = stdout.match(resultsRegexp)!;
-            // vscode.window.showInformationMessage(this.name + "results: " + JSON.stringify(results));
             
             const duration = Date.now() - start;
 
             if (failures.length === 0) {
-              vscode.window.showInformationMessage("success");
               run.passed(item, duration);
             } else {
               const received = failures.map(x => x[2]).join('\n');
               const expected = failures.map(x => x[3]).join('\n');
-              vscode.window.showInformationMessage("fail");
               const message = vscode.TestMessage.diff(results[0], received, expected);
               message.location = new vscode.Location(item.uri!, item.range!);
               run.failed(item, message, duration);
