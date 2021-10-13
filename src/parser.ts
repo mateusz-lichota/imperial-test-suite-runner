@@ -5,8 +5,10 @@ const testRe = /TestCase\s*"([^"]*)"/;
 
 interface TCimport {
   name: string;
-  rangeStart: number;
-  rangeStop: number;
+  rowStart: number;
+  rowStop: number;
+  colStart: number;
+  colStop: number;
   command: string;
 }
 
@@ -19,6 +21,6 @@ export const parseHaskell = (text: string, events: {
     let tcs: [TCimport] = JSON.parse(result);
     tcs.forEach(tc => {
       vscode.window.showInformationMessage(JSON.stringify(tc));
-      events.onTest(new vscode.Range(new vscode.Position(tc.rangeStart-1, 0), new vscode.Position(tc.rangeStop-1, 0)), tc.name, tc.command);
+      events.onTest(new vscode.Range(new vscode.Position(tc.rowStart-1, tc.colStart), new vscode.Position(tc.rowStop-1, tc.colStop)), tc.name, tc.command);
     });
 };

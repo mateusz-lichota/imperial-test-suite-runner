@@ -70,8 +70,10 @@ extractTestList _ = Nothing
 
 data TestCaseStruct = TestCaseStruct {
       name  :: String,
-      rangeStart :: Int,
-      rangeStop :: Int,
+      rowStart :: Int,
+      rowStop :: Int,
+      colStart :: Int,
+      colStop :: Int,
       command :: String
     } deriving (Show, Generic)
 
@@ -80,7 +82,7 @@ instance ToJSON TestCaseStruct
 testCaseNameRegexp = "TestCase \"([^\"]*)\""
 
 expToTestCase :: Exp SrcSpanInfo -> TestCaseStruct
-expToTestCase e@(App (SrcSpanInfo (SrcSpan _ rangeStart _ rangeStop _) _) _ _) = TestCaseStruct name rangeStart rangeStop pp
+expToTestCase e@(App (SrcSpanInfo (SrcSpan _ rowStart colStart rowStop colStop) _) _ _) = TestCaseStruct name rowStart rowStop colStart colStop pp
   where pp = prettyPrintWithMode defaultMode e :: String
         name = head (pp =~ testCaseNameRegexp :: [[String]]) !! 1
         
