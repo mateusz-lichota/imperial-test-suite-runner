@@ -134,8 +134,8 @@ export class TestCase {
             if (failures.length === 0) {
               run.passed(item, duration);
             } else {
-              const received = failures.map(x => x[2]).join('\n');
-              const expected = failures.map(x => x[4]).join('\n');
+              const received = failures.map(x => `${this.name} ${x[1]} = ${x[2]}`).join('\n');
+              const expected = failures.map(x => `${this.name} ${x[1]} = ${x[4]}`).join('\n');
               const message = vscode.TestMessage.diff(results[0], expected, received);
               message.location = new vscode.Location(item.uri!, item.range!);
               run.failed(item, message, duration);
