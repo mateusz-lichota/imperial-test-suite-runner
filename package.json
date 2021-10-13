@@ -2,15 +2,20 @@
   "publisher": "mateusz-lichota",
   "name": "imperial-test-suite-runner",
   "displayName": "imperial Test Suite Runner",
-  "description": "",
+  "description": "This extension integrates the IC/TestSuite.hs provided with many haskell exercises with VSCode Testing API.",
   "version": "0.0.1",
   "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/veerte/imperial-test-suite-runner"
+  },
   "engines": {
     "vscode": "^1.61.0"
   },
   "categories": [
     "Other"
   ],
+  "keywords": ["haskell", "imperial", "test", "testing", "IC"],
   "activationEvents": [
     "workspaceContains:Tests.hs"
   ],
