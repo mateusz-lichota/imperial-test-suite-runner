@@ -4,6 +4,7 @@
   "displayName": "imperial Test Suite Runner",
   "description": "",
   "version": "0.0.1",
+  "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "vscode": "^1.61.0"
   },
@@ -31,8 +32,7 @@
     "compile": "tsc -p ./ && ghc -no-keep-hi-files -no-keep-o-files src/parser.hs -o parser",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "lint": "eslint src --ext ts"
   },
   "devDependencies": {
     "@types/glob": "^7.1.4",

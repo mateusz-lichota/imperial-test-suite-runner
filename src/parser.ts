@@ -1,3 +1,11 @@
+/* 
+Copyright (c) 2021, Mateusz Lichota
+All rights reserved.
+
+This source code is licensed under the BSD-style license found in the
+LICENSE.txt file in the root directory of this source tree. 
+*/
+
 import * as vscode from 'vscode';
 import { execSync } from 'child_process';
 
