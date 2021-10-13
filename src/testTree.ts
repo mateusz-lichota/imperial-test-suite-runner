@@ -101,11 +101,26 @@ export class TestCase {
       const start = Date.now();
 
       fs.readFile(filePath, 'utf-8', (err, data) => {
+        if (err) {
+          run.skipped(item);
+          vscode.window.showInformationMessage(`error testing ${this.name}: ${err.name} ${err.message}`);
+          reject();
+        }
         
         data.replace(/main = (.*)/, `main = ${mainCommand}`);
         fs.writeFile(newPath, data, (err) => {
+          if (err) {
+            run.skipped(item);
+            vscode.window.showInformationMessage(`error testing ${this.name}: ${err.name} ${err.message}`);
+            reject();
+          }
           
           exec(`cd ${dir} && ${runghcPath} ${newPath}`, {}, (err, stdout, stderr) => {
+            if (err) {
+              run.skipped(item);
+              vscode.window.showInformationMessage(`error testing ${this.name}: ${err.name} ${err.message}`);
+              fs.unlink(newPath, () => reject());
+            }
             
             const failureRegexp = new RegExp(`> ${this.name} ([^=]+) = (.+)\n *test case expected: (.+)`, 'g');
             const failures = Array.from(stdout.matchAll(failureRegexp));
@@ -126,8 +141,7 @@ export class TestCase {
               run.failed(item, message, duration);
             }
 
-            // fs.unlinkSync(newPath);
-            resolve();
+            fs.unlink(newPath, () => resolve());
           });
         });
       });
