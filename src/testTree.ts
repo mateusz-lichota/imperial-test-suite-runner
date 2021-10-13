@@ -122,7 +122,7 @@ export class TestCase {
               fs.unlink(newPath, () => reject());
             }
             
-            const failureRegexp = new RegExp(`> ${this.name} ([^=]+) = (.+)\n *test case expected: (.+)`, 'g');
+            const failureRegexp = new RegExp(`> ${this.name} ([^=]+) = (.+)(\n.+)*test case expected: (.+)`, 'g');
             const failures = Array.from(stdout.matchAll(failureRegexp));
             
             
@@ -135,8 +135,7 @@ export class TestCase {
               run.passed(item, duration);
             } else {
               const received = failures.map(x => x[2]).join('\n');
-              const expected = failures.map(x => x[3]).join('\n');
-              const message = vscode.TestMessage.diff(results[0], received, expected);
+              const expected = failures.map(x => x[4]).join('\n');
               message.location = new vscode.Location(item.uri!, item.range!);
               run.failed(item, message, duration);
             }
