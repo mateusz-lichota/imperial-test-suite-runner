@@ -96,13 +96,11 @@ export class TestCase {
 
       const filePath = item.uri!.fsPath;
       const dir = path.dirname(filePath);
-      const newPath = `${dir}/${uuidV4()}`;
+      const newPath = `/tmp/${uuidV4()}`;
 
       const start = Date.now();
 
-      fs.createReadStream(filePath).pipe(fs.createWriteStream(newPath));
-
-      fs.readFile(newPath, 'utf-8', (err, data) => {
+      fs.readFile(filePath, 'utf-8', (err, data) => {
         
         data.replace(/main = (.*)/, `main = ${mainCommand}`);
         fs.writeFile(newPath, data, (err) => {
