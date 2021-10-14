@@ -3,8 +3,14 @@
 All notable changes to the Imperial Test Suite Runner extension will be documented in this file.
 
 ## [Unreleased]
+
+
+## [1.1.0]
 ### Added
 - This changelog
+
+### Fixed
+- Fixed design error causing the extension to only work in linux environments
 
 ## [1.0.0] - 2021-10-14
 ### Added

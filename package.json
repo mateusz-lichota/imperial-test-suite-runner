@@ -3,7 +3,7 @@
   "name": "imperial-test-suite-runner",
   "displayName": "Imperial Test Suite Runner",
   "description": "This extension integrates the IC/TestSuite.hs provided with many haskell exercises with VSCode Testing API.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
@@ -22,12 +22,17 @@
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
-      "title": "TypeScript",
+      "title": "Executable paths",
       "properties": {
         "imperialTestSuiteRunner.runghcPath": {
           "type": "string",
           "default": "runghc",
           "description": "Full path to the runghc executable"
+        },
+        "imperialTestSuiteRunner.ghcPath": {
+          "type": "string",
+          "default": "ghc",
+          "description": "Full path to the ghc executable"
         }
       }
     }
@@ -35,7 +40,7 @@
   "icon": "resources/imperial_logo.png",
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./ && ghc -no-keep-hi-files -no-keep-o-files src/parser.hs -o parser",
+    "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts"
@@ -45,7 +50,7 @@
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
     "@types/uuid": "^8.3.1",
-    "@types/vscode": "^1.61.0",
+    "@types/vscode": "^1.55.0",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "@vscode/test-electron": "^1.6.2",

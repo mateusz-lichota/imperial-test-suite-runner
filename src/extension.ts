@@ -7,9 +7,15 @@ LICENSE.txt file in the root directory of this source tree.
 */
 
 import * as vscode from 'vscode';
-import { getContentFromFilesystem, HaskellTestData, TestCase, testData, TestFile } from './testTree';
+import { TestCase, testData, TestFile } from './testTree';
+import { execFileSync } from 'child_process';
+import fs = require('fs');
+
 
 export async function activate(context: vscode.ExtensionContext) {
+
+  buildParserIfNonexistent();
+
   const ctrl = vscode.tests.createTestController('imperialTestController', 'Imperial Test Suite');
   context.subscriptions.push(ctrl);
 
@@ -97,6 +103,16 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.workspace.onDidOpenTextDocument(updateNodeForDocument),
     vscode.workspace.onDidChangeTextDocument(e => updateNodeForDocument(e.document)),
   );
+}
+
+function buildParserIfNonexistent() {
+  const myExtDir = vscode.extensions.getExtension("mateusz-lichota.imperial-test-suite-runner")!.extensionPath;
+
+  if (!fs.existsSync(`${myExtDir}/parser`)) {
+    vscode.window.showInformationMessage('Building parser');
+    const ghcPath: string = vscode.workspace.getConfiguration('imperialTestSuiteRunner').get('ghcPath')!;
+    execFileSync(ghcPath, ["-no-keep-hi-files", "-no-keep-o-files", `${myExtDir}/src/parser.hs`, "-o", `${myExtDir}/parser`], {});
+  }
 }
 
 function getOrCreateFile(controller: vscode.TestController, uri: vscode.Uri) {
