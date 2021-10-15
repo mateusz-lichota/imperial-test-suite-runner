@@ -1,0 +1,4 @@
+cradle:
+  cabal:
+    - path: "src/parser.hs"
+      component: "imperial-test-suite-runner:exe:imperial-test-suite-runner"

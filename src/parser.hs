@@ -42,7 +42,6 @@ import Language.Haskell.Exts.Pretty
   , PPLayout              ( .. )
   , defaultMode
   )
-import TcRnMonad (ContainsCostCentreState(extractCostCentreState))
 import System.Directory.Internal.Prelude (exitFailure)
 
 {- Local Modules Imported -}
