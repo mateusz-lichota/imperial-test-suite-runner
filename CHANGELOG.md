@@ -4,11 +4,18 @@ All notable changes to the Imperial Test Suite Runner extension will be document
 
 ## [Unreleased]
 
-## [1.1.1]
+## [1.2.0] - 2021-10-15
+### Fixed
+- Parser is now compiled at build time into javascript, which should make it work on all platforms
+
+### Minor changes
+- Removed the fourth BSD clause from the license
+
+## [1.1.1] - 2021-10-14
 ### Fixed
 - Fixed parser source file not being included in the build
 
-## [1.1.0]
+## [1.1.0] - 2021-10-14
 ### Added
 - This changelog
 
