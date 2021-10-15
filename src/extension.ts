@@ -109,9 +109,12 @@ function buildParserIfNonexistent() {
   const myExtDir = vscode.extensions.getExtension("mateusz-lichota.imperial-test-suite-runner")!.extensionPath;
 
   if (!fs.existsSync(`${myExtDir}/parser`)) {
-    vscode.window.showInformationMessage('Building parser');
     const ghcPath: string = vscode.workspace.getConfiguration('imperialTestSuiteRunner').get('ghcPath')!;
-    execFileSync(ghcPath, ["-no-keep-hi-files", "-no-keep-o-files", `${myExtDir}/src/parser.hs`, "-o", `${myExtDir}/parser`], {});
+    try {
+      execFileSync(ghcPath, ["-no-keep-hi-files", "-no-keep-o-files", `${myExtDir}/src/parser.hs`, "-o", `${myExtDir}/parser`], {});
+    } catch (err: any) {
+      vscode.window.showErrorMessage("Imperial Test Suite Runner: building parser failed: " + err.message);
+    }
   }
 }
 

@@ -4,6 +4,9 @@ All notable changes to the Imperial Test Suite Runner extension will be document
 
 ## [Unreleased]
 
+## [1.1.1]
+### Fixed
+- Fixed parser source file not being included in the build
 
 ## [1.1.0]
 ### Added
