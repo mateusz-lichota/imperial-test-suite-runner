@@ -2,7 +2,9 @@
 
 All notable changes to the Imperial Test Suite Runner extension will be documented in this file.
 
-## [Unreleased]
+## [1.2.1] - 2021-10-17
+### Minor improvements
+- Parser is now an importable nodejs submodule, which makes parsing faster
 
 ## [1.2.0] - 2021-10-15
 ### Fixed

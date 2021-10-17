@@ -3,7 +3,7 @@
   "name": "imperial-test-suite-runner",
   "displayName": "Imperial Test Suite Runner",
   "description": "This extension integrates the IC/TestSuite.hs provided with many haskell exercises with VSCode Testing API.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "SEE LICENSE IN LICENSE.txt",
   "repository": {
     "type": "git",
