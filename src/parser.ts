@@ -7,9 +7,17 @@ LICENSE.txt file in the root directory of this source tree.
 */
 
 import * as vscode from 'vscode';
-import { execFileSync } from 'child_process';
 
-const testRe = /TestCase\s*"([^"]*)"/;
+const parser = require('parser');
+
+var extractTestCases: Function;
+async function parserPromisified() : Promise<Function> {
+  return new Promise((resolve, reject) => {
+    parser(({ wrapped }: any) => {
+      resolve(wrapped.extractTestCases);
+    });
+  });
+}
 
 interface TCimport {
   name: string;
@@ -20,14 +28,16 @@ interface TCimport {
   command: string;
 }
 
-const myExtDir = vscode.extensions.getExtension ("mateusz-lichota.imperial-test-suite-runner")!.extensionPath;
 
-export const parseHaskell = (text: string, events: {
+export async function parseHaskell(text: string, events: {
   onTest(range: vscode.Range, name: string, testcaseCMD: string): void;
-  }) => {
-    const result = execFileSync(`${myExtDir}/bin/parser`, [], {input: text}).toString();
-    let tcs: [TCimport] = JSON.parse(result);
-    tcs.forEach(tc => {
-      events.onTest(new vscode.Range(new vscode.Position(tc.rowStart-1, tc.colStart), new vscode.Position(tc.rowStop-1, tc.colStop)), tc.name, tc.command);
-    });
+}) {
+  if (!extractTestCases) {
+    extractTestCases = await parserPromisified();
+  }
+  const result = await extractTestCases(text);
+  let tcs: [TCimport] = JSON.parse(result);
+  tcs.forEach(tc => {
+    events.onTest(new vscode.Range(new vscode.Position(tc.rowStart - 1, tc.colStart), new vscode.Position(tc.rowStop - 1, tc.colStop)), tc.name, tc.command);
+  });
 };

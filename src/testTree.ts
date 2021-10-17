@@ -40,7 +40,7 @@ export class TestFile {
     try {
       const content = await getContentFromFilesystem(item.uri!);
       item.error = undefined;
-      this.updateFromContents(controller, content, item);
+      await this.updateFromContents(controller, content, item);
     } catch (e: any) {
       item.error = e.stack;
     }
@@ -50,7 +50,7 @@ export class TestFile {
    * Parses the tests from the input text, and updates the tests contained
    * by this file to be those from the text,
    */
-  public updateFromContents(controller: vscode.TestController, content: string, item: vscode.TestItem) {
+  public async updateFromContents(controller: vscode.TestController, content: string, item: vscode.TestItem) {
     const ancestors = [{ item, children: [] as vscode.TestItem[] }];
     const thisGeneration = generationCounter++;
     this.didResolve = true;
@@ -62,7 +62,7 @@ export class TestFile {
       }
     };
 
-    parseHaskell(content, {
+    await parseHaskell(content, {
       onTest: (range: vscode.Range, name: string, testcaseCMD: string) => {
         const parent = ancestors[ancestors.length - 1];
         const data = new TestCase(name, testcaseCMD, thisGeneration);

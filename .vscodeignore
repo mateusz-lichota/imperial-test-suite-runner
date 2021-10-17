@@ -2,10 +2,7 @@
 .vscode-test/**
 .gitignore
 .gitattributes
-.yarnrc
-vsc-extension-quickstart.md
 **/tsconfig.json
 **/.eslintrc.json
-**/*.map
-**/*.ts
+src
 dist-newstyle

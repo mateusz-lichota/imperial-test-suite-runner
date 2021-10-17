@@ -15,7 +15,13 @@
   "categories": [
     "Other"
   ],
-  "keywords": ["haskell", "imperial", "test", "testing", "IC"],
+  "keywords": [
+    "haskell",
+    "imperial",
+    "test",
+    "testing",
+    "IC"
+  ],
   "activationEvents": [
     "workspaceContains:Tests.hs"
   ],
@@ -60,6 +66,7 @@
     "typescript": "^4.4.3"
   },
   "dependencies": {
+    "parser": "file:parser",
     "uuid": "^8.3.2"
   }
 }

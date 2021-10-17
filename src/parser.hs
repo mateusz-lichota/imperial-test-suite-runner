@@ -33,6 +33,7 @@ import Language.Haskell.Exts.Parser
 import Language.Haskell.Exts.Syntax
 import Language.Haskell.Exts.SrcLoc
 
+import GHCJS.CommonJS (exportMain, exports)
 
 -- import qualified Language.Haskell.Exts.Pretty as Pretty
 import Language.Haskell.Exts.Pretty
@@ -42,7 +43,6 @@ import Language.Haskell.Exts.Pretty
   , PPLayout              ( .. )
   , defaultMode
   )
-import System.Directory.Internal.Prelude (exitFailure)
 
 {- Local Modules Imported -}
 {- End of Imports -}
@@ -100,19 +100,22 @@ expToTestCase _ = undefined
 printParsed :: Pretty a => a -> IO ()
 printParsed ssi = print $ prettyPrintWithMode defaultMode ssi
 
-main = do
-  args <- getArgs
-  contents <- getContents
-  let parseResult = parseContents contents
-  
-  case parseResult of
-    ParseFailed _ _ -> putStrLn "[]" 
+extractTestCases :: String -> String
+extractTestCases program_code = do
+  case parseContents program_code of
+    ParseFailed _ _ -> "[]" 
     ParseOk parsed -> do
       let declarations = extractDeclarations parsed
       let testcases = extractTestList $ declarations!!(length declarations - 3)
 
       case testcases of
-        Nothing -> putStrLn "[]"
-        Just tcs -> putStrLn $ toBS $ encode $ map expToTestCase tcs
+        Nothing -> "[]"
+        Just tcs -> toBS $ encode $ map expToTestCase tcs
 
-  
+testFunc :: String -> String
+testFunc s = "hello"
+
+main :: IO ()
+main = exportMain [ 
+  "extractTestCases" `exports` extractTestCases
+  ]

@@ -32,6 +32,7 @@ executable haskell-parser-js
         regex-tdfa,
         haskell-src-exts,
         ghcjs-base,
+        ghcjs-commonjs,
     hs-source-dirs:   src
 
     default-language: Haskell2010
