@@ -3,6 +3,8 @@
 All notable changes to the Imperial Test Suite Runner extension will be documented in this file.
 
 ## [Unreleased]
+### Removed
+- Removed an unnecessary 'ghcPath' parameter in settings
 ### Fixed
 - Remove a dependency on a locally modified version of ghcjs-commonjs, and instead have a fixed version of it downloaded from github at build time.
 

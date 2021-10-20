@@ -34,11 +34,6 @@
           "type": "string",
           "default": "runghc",
           "description": "Full path to the runghc executable"
-        },
-        "imperialTestSuiteRunner.ghcPath": {
-          "type": "string",
-          "default": "ghc",
-          "description": "Full path to the ghc executable"
         }
       }
     }
