@@ -1,0 +1,8 @@
+source-repository-package
+  type: git
+  location: git://github.com/ajnsit/ghcjs-commonjs
+  subdir: ghcjs-commonjs
+  tag: 97f98d23d0bcb533f1230286839d7e6041bf0692
+
+packages: haskell-parser-js.cabal
+compiler: ghcjs

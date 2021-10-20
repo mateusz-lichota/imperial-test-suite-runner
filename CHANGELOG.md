@@ -2,6 +2,10 @@
 
 All notable changes to the Imperial Test Suite Runner extension will be documented in this file.
 
+## [Unreleased]
+### Fixed
+- Remove a dependency on a locally modified version of ghcjs-commonjs, and instead have a fixed version of it downloaded from github at build time.
+
 ## [1.2.1] - 2021-10-17
 ### Minor improvements
 - Parser is now an importable nodejs submodule, which makes parsing faster
