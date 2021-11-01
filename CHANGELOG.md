@@ -2,11 +2,12 @@
 
 All notable changes to the Imperial Test Suite Runner extension will be documented in this file.
 
-## [Unreleased]
+## [1.2.2]
 ### Removed
 - Removed an unnecessary 'ghcPath' parameter in settings
 ### Fixed
 - Remove a dependency on a locally modified version of ghcjs-commonjs, and instead have a fixed version of it downloaded from github at build time.
+- Fixed infinite loading on HaskellCalculus
 
 ## [1.2.1] - 2021-10-17
 ### Minor improvements
