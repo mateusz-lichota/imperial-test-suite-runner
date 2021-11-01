@@ -40,7 +40,8 @@
   },
   "icon": "resources/imperial_logo.png",
   "scripts": {
-    "vscode:prepublish": "cabal build --ghcjs && npm run compile",
+    "vscode:prepublish": "npm run build-parser && npm run compile",
+    "build-parser": "bash build.sh",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
