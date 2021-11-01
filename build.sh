@@ -1,10 +1,12 @@
 #!/bin/bash
-cabal build --ghcjs
+cabal build --ghcjs &&
 
-JSEXE="dist-newstyle/build/x86_64-linux/ghcjs-8.4.0.1/haskel-parser-js-0.1.0.0/x/haskell-parser-js/build/haskell-parser-js/haskell-parser-js.jsexe"
+JSEXE="dist-newstyle/build/x86_64-linux/ghcjs-8.4.0.1/haskell-parser-js-0.1.0.0/x/haskell-parser-js/build/haskell-parser-js/haskell-parser-js.jsexe" &&
 
-google-closure-compiler --js "$JSEXE/rts.js" --js_output_file "$JSEXE/rts.compiled.js"  --jscomp_off uselessCode --jscomp_off duplicateMessage
-google-closure-compiler --js "$JSEXE/out.js" --js_output_file "$JSEXE/out.compiled.js"
+# cp $JSEXE/rts.js $JSEXE/rts.compiled.js &&
+# cp $JSEXE/out.js $JSEXE/out.compiled.js &&
+google-closure-compiler --js "$JSEXE/rts.js" --js_output_file "$JSEXE/rts.compiled.js"  --jscomp_off uselessCode --jscomp_off duplicateMessage &&
+google-closure-compiler --js "$JSEXE/out.js" --js_output_file "$JSEXE/out.compiled.js" &&
 # google-closure-compiler --js "$JSEXE/lib.js" --js_output_file "$JSEXE/lib.js"
 
 
