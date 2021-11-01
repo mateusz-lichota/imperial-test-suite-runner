@@ -86,7 +86,7 @@ data TestCaseStruct = TestCaseStruct {
 
 instance ToJSON TestCaseStruct
 
-testCaseNameRegexp = "TestCase \"([^\"]*)\""
+testCaseNameRegexp = "[a-zA-Z0-9]+ \"([^\"]+)\""
 
 expToTestCase :: Exp SrcSpanInfo -> TestCaseStruct
 expToTestCase e@(App (SrcSpanInfo (SrcSpan _ rowStart colStart rowStop colStop) _) _ _) = TestCaseStruct name rowStart rowStop colStart colStop pp
